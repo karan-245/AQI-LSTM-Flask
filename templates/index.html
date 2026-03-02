@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AQI Forecast Using LSTM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🌫️ AQI Forecast Using LSTM</h1>
+
+    <form method="POST">
+        <input type="text" name="city" placeholder="Enter City Name" required>
+        <button type="submit">Predict AQI</button>
+    </form>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if forecast_table %}
+
+        <div class="card">
+            <h2>📅 AQI Forecast (Next 3 Days)</h2>
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Predicted AQI</th>
+                    <th>Category</th>
+                </tr>
+                {% for row in forecast_table %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>📈 AQI Trend & Forecast</h2>
+            <img src="{{ url_for('static', filename='trend.png') }}">
+        </div>
+
+        <div class="card">
+            <h2>📊 AQI Category Distribution</h2>
+            <img src="{{ url_for('static', filename='distribution.png') }}">
+        </div>
+
+        <div class="card">
+            <h2>📊 Model Evaluation Results</h2>
+            <div class="metrics">
+                <div>MAE: {{ mae }}</div>
+                <div>RMSE: {{ rmse }}</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📘 AQI Values & Classification</h2>
+            <table>
+                <tr>
+                    <th>AQI Range</th>
+                    <th>Class</th>
+                    <th>Health Impact</th>
+                </tr>
+                {% for row in aqi_values_table %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
